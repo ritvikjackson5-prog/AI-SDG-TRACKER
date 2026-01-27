@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>India vs World SDG Progress – Pie Charts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- CHART JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+  font-family:'Poppins',sans-serif;
+  background:#020b08;
+  color:#eaffea;
+  margin:0;
+  padding:40px;
+}
+
+h1{
+  text-align:center;
+  color:#00ff88;
+  margin-bottom:10px;
+}
+
+p{
+  text-align:center;
+  max-width:900px;
+  margin:0 auto 40px;
+  color:#ccffee;
+}
+
+.chart-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:40px;
+  max-width:1100px;
+  margin:auto;
+}
+
+.chart-box{
+  background:rgba(0,0,0,0.6);
+  padding:30px;
+  border-radius:25px;
+  border:2px solid rgba(0,255,136,0.3);
+  box-shadow:0 0 30px rgba(0,255,136,0.25);
+}
+
+.chart-box h2{
+  text-align:center;
+  color:#00ff88;
+  margin-bottom:15px;
+}
+
+footer{
+  text-align:center;
+  margin-top:60px;
+  color:#88ffcc;
+}
+</style>
+</head>
+
+<body>
+
+<h1>India vs World SDG Progress (2025)</h1>
+<p>
+This page compares India’s progress with the global average across key
+Sustainable Development Goal sectors using pie charts for easy understanding.
+</p>
+<div style="text-align:center; margin-bottom:30px;">
+  <label style="font-weight:600;">Compare India with: </label>
+  <select id="countrySelect" onchange="updatePie()"
+    style="padding:10px 15px;border-radius:8px;">
+    <option value="world">World Average</option>
+    <option value="usa">USA</option>
+    <option value="china">China</option>
+    <option value="germany">Germany</option>
+    <option value="japan">Japan</option>
+    <option value="brazil">Brazil</option>
+  </select>
+</div>
+
+<div class="chart-container">
+
+  <div class="chart-box">
+    <h2>India – SDG Sector Progress</h2>
+    <canvas id="indiaPie"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h2 id="countryTitle">World – SDG Sector Progress</h2>
+    <canvas id="worldPie"></canvas>
+  </div>
+
+</div>
+<!-- ===== KEY INSIGHTS SECTION ===== -->
+<div style="
+max-width:900px;
+margin:50px auto 0;
+background:rgba(0,0,0,0.6);
+padding:35px;
+border-radius:25px;
+border:2px solid rgba(0,255,136,0.3);
+text-align:center;
+">
+
+  <h2 style="color:#00ff88; margin-bottom:15px;">
+    Key Insights from Pie Chart Analysis
+  </h2>
+
+  <p>
+    The pie charts indicate that India has shown strong progress in education,
+    healthcare, and economic development sectors.
+  </p>
+
+  <p>
+    However, areas such as climate action and clean energy still require
+    focused attention when compared with global averages.
+  </p>
+
+</div>
+<!-- ===== BACK TO HOME BUTTON ===== -->
+<div style="text-align:center; margin-top:40px;">
+  <a href="index.html" style="
+    display:inline-block;
+    padding:14px 36px;
+    background:#00ff88;
+    color:#003b22;
+    border-radius:40px;
+    font-weight:600;
+    text-decoration:none;
+  ">
+    ← Back to Home
+  </a>
+</div>
+<h1>India vs World SDG Progress</h1>
+<div style="text-align:center; margin:25px 0;">
+  <label style="font-weight:600; font-size:16px;">
+    Compare India with:
+  </label>
+
+  <select id="countrySelect" style="
+    padding:10px 14px;
+    margin-left:10px;
+    border-radius:8px;
+    font-size:15px;
+  ">
+    <option value="world">World</option>
+    <option value="usa">USA</option>
+    <option value="china">China</option>
+    <option value="germany">Germany</option>
+    <option value="japan">Japan</option>
+  </select>
+</div>
+
+<div class="chart-container">
+  <canvas id="indiaPie"></canvas>
+  <canvas id="worldPie"></canvas>
+</div>
+
+<footer>
+  © 2025 SDG Tracker | Data for educational use
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // ===== LABELS =====
+  const labels = [
+    "Poverty Reduction",
+    "Health",
+    "Education",
+    "Clean Energy",
+    "Economic Growth",
+    "Climate Action"
+  ];
+
+  // ===== INDIA DATA =====
+  const indiaData = [58, 64, 66, 60, 62, 52];
+
+  // ===== COUNTRY DATA =====
+const countryData = {
+  world:   [45, 60, 62, 55, 58, 48],
+  usa:     [52, 68, 70, 65, 60, 54],
+  china:   [60, 66, 64, 70, 62, 58],
+  germany: [65, 72, 75, 78, 70, 68],
+  japan:   [63, 70, 73, 76, 68, 66],
+  brazil:  [55, 62, 64, 60, 58, 56] // ✅ ADD THIS
+};
+
+  // ===== INDIA PIE =====
+  new Chart(document.getElementById("indiaPie"), {
+    type: "doughnut",
+    data: {
+      labels: labels,
+      datasets: [{
+        data: indiaData,
+        backgroundColor: [
+          "#00ff88",
+          "#4dd2ff",
+          "#ffaa33",
+          "#66ffcc",
+          "#ff77aa",
+          "#88aaff"
+        ]
+      }]
+    },
+    options: {
+      plugins: { legend: { position: "bottom" } }
+    }
+  });
+
+  // ===== WORLD / COUNTRY PIE =====
+  const worldChart = new Chart(document.getElementById("worldPie"), {
+    type: "doughnut",
+    data: {
+      labels: labels,
+      datasets: [{
+        data: countryData.world,
+        backgroundColor: [
+          "#00ff88",
+          "#4dd2ff",
+          "#ffaa33",
+          "#66ffcc",
+          "#ff77aa",
+          "#88aaff"
+        ]
+      }]
+    },
+    options: {
+      plugins: { legend: { position: "bottom" } }
+    }
+  });
+
+  // ===== DROPDOWN CHANGE =====
+document.getElementById("countrySelect").addEventListener("change", function () {
+  const selected = this.value;
+
+  // Update pie chart data
+  worldChart.data.datasets[0].data = countryData[selected];
+  worldChart.update();
+
+  // Update title text
+  const title = document.getElementById("countryTitle");
+  title.textContent = selected.toUpperCase() + " – SDG Sector Progress";
+});
+
+});
+</script>
+
+
+
+</body>
+</html>

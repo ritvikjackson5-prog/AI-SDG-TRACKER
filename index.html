@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sustainable Development Goals Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- CHART -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- LEAFLET MAP -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+/* ===== GLOBAL ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:#020b08;
+  color:#eaffea;
+  overflow-x:hidden;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:14px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  z-index:1000;
+}
+.logo{font-size:1.4rem;font-weight:700;color:#00ff88}
+.nav-links a{
+  margin-left:20px;
+  text-decoration:none;
+  color:#eaffea;
+}
+.nav-links a:hover{color:#00ff88}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0.35;
+  z-index:0;
+}
+.hero-box{
+  background:rgba(0,0,0,0.65);
+  padding:60px;
+  border-radius:30px;
+  max-width:900px;
+  z-index:3;
+  border:2px solid rgba(0,255,136,0.4);
+  box-shadow:0 0 40px rgba(0,255,136,0.4);
+}
+.hero-box h1{font-size:3rem;color:#00ff88}
+.hero-box p{margin-top:15px;font-size:1.15rem}
+.hero-box a{
+  display:inline-block;
+  margin-top:30px;
+  padding:14px 40px;
+  border-radius:50px;
+  background:#00ff88;
+  color:black;
+  font-weight:600;
+  text-decoration:none;
+}
+.hero-box a:hover{transform:scale(1.08)}
+
+/* ===== FLOATING PARTICLES ===== */
+.leaf-particles{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+}
+.leaf-particles span{
+  position:absolute;
+  top:-20%;
+  width:14px;
+  height:14px;
+  background:radial-gradient(circle at 30% 30%, #00ff88, #007f55);
+  border-radius:0 50% 50% 50%;
+  opacity:0.7;
+  animation:drift 22s linear infinite;
+}
+.leaf-particles span:nth-child(1){left:10%;animation-delay:0s}
+.leaf-particles span:nth-child(2){left:20%;animation-delay:3s}
+.leaf-particles span:nth-child(3){left:30%;animation-delay:6s}
+.leaf-particles span:nth-child(4){left:40%;animation-delay:9s}
+.leaf-particles span:nth-child(5){left:50%;animation-delay:12s}
+.leaf-particles span:nth-child(6){left:60%;animation-delay:2s}
+.leaf-particles span:nth-child(7){left:70%;animation-delay:5s}
+.leaf-particles span:nth-child(8){left:80%;animation-delay:8s}
+.leaf-particles span:nth-child(9){left:90%;animation-delay:11s}
+.leaf-particles span:nth-child(10){left:95%;animation-delay:14s}
+
+@keyframes drift{
+  0%{transform:translate(0,-20%) rotate(0deg)}
+  50%{transform:translate(80px,50vh) rotate(180deg)}
+  100%{transform:translate(0,120vh) rotate(360deg)}
+}
+
+/* ===== SECTIONS ===== */
+section{padding:100px 40px}
+.section-title{
+  text-align:center;
+  font-size:2.2rem;
+  color:#00ff88;
+  margin-bottom:40px;
+}
+
+/* ===== INFO ===== */
+.info-box{
+  max-width:1100px;
+  margin:auto;
+  background:rgba(0,0,0,0.6);
+  padding:50px;
+  border-radius:30px;
+  border:2px solid rgba(0,255,136,0.3);
+}
+
+/* ===== CHART ===== */
+.chart-section{background:#021b10;text-align:center}
+
+/* ===== MAP ===== */
+#worldMap{
+  height:460px;
+  max-width:1100px;
+  margin:40px auto;
+  border-radius:25px;
+  border:3px solid #00ff88;
+}
+
+/* ===== VIDEO ===== */
+.video-container{
+  max-width:900px;
+  margin:auto;
+  border-radius:25px;
+  overflow:hidden;
+}
+
+/* ===== SDG GRID ===== */
+.sdg-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:25px;
+}
+.sdg-card{
+  background:rgba(0,0,0,0.65);
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  text-decoration:none;
+  color:#eaffea;
+  border:2px solid rgba(0,255,136,0.3);
+}
+.sdg-card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 0 30px rgba(0,255,136,0.6);
+}
+
+/* ===== FOOTER ===== */
+footer{
+  background:#000;
+  padding:25px;
+  text-align:center;
+}
+/* ===== FORCE SDG INFO STYLE (VISIBLE CHANGE) ===== */
+#info .info-box{
+  padding:90px !important;
+  max-width:1200px !important;
+  box-shadow:0 0 80px rgba(0,255,136,0.45) !important;
+}
+
+#info .info-box p{
+  font-size:1.2rem !important;
+  line-height:2 !important;
+  text-align:center !important;
+}
+
+.section-title{
+  font-size:2.8rem !important;
+}
+
+.section-title::after{
+  content:"";
+  display:block;
+  width:140px;
+  height:4px;
+  margin:20px auto 0;
+  background:linear-gradient(90deg,transparent,#00ff88,transparent);
+}
+/* ===== SOFT BACKGROUND RAIN (FINAL) ===== */
+.rain{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.rain::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      -15deg,
+      rgba(255,255,255,0.08),
+      rgba(255,255,255,0.08) 1px,
+      transparent 1px,
+      transparent 18px
+    );
+  animation: rainFall 1.2s linear infinite;
+  opacity:0.18;
+}
+
+/* Smooth slow rain */
+@keyframes rainFall{
+  from{ background-position:0 0; }
+  to{ background-position:-160px 160px; }
+}
+
+/* Keep content above rain */
+body > *{
+  position: relative;
+  z-index: 1;
+}
+/* ===== BACKGROUND EFFECT TEST (VISIBLE) ===== */
+.bg-effect{
+  position: fixed;
+  inset: 0;
+  z-index: -1;   /* force behind everything */
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,255,136,0.35), transparent 60%),
+    radial-gradient(circle at 80% 30%, rgba(0,180,255,0.30), transparent 65%),
+    radial-gradient(circle at 50% 80%, rgba(0,255,200,0.28), transparent 70%);
+  animation: bgMove 6s linear infinite alternate;
+}
+
+/* movement */
+@keyframes bgMove{
+  from{
+    transform: translateY(0);
+  }
+  to{
+    transform: translateY(-40px);
+  }
+}
+/* ===== FORCE PIE LINK VISIBILITY ===== */
+.pie-link-wrapper{
+  position: relative;
+  z-index: 9999;        /* above all effects */
+  text-align: center;
+  margin-top: 40px;
+}
+
+.pie-link-btn{
+  display: inline-block;
+  padding: 16px 42px;
+  background: linear-gradient(90deg, #00ff88, #66ffcc);
+  color: #003b22;
+  border-radius: 50px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1rem;
+  box-shadow: 0 0 30px rgba(0,255,136,0.5);
+}
+
+.pie-link-btn:hover{
+  transform: scale(1.05);
+}
+/* ===== GLOBAL COLOR UPGRADE ===== */
+:root{
+  --green:#00ff88;
+  --blue:#4dd2ff;
+  --orange:#ffaa33;
+  --purple:#9b7bff;
+  --dark:#020b08;
+}
+
+/* headings */
+.section-title{
+  color:var(--green);
+}
+
+/* cards */
+.info-box, .chart-box, .sdg-card{
+  background:linear-gradient(
+    135deg,
+    rgba(0,255,136,0.08),
+    rgba(77,210,255,0.08),
+    rgba(155,123,255,0.08)
+  );
+}
+
+/* SDG cards hover */
+.sdg-card:hover{
+  box-shadow:
+    0 0 20px rgba(0,255,136,0.4),
+    0 0 40px rgba(155,123,255,0.35);
+}
+
+/* buttons */
+a, .pie-link-btn{
+  background:linear-gradient(90deg,var(--green),var(--blue),var(--purple));
+}
+
+
+</style>
+<style>
+  html, body {
+    margin: 0;
+    min-height: 100%;
+  }
+
+  body {
+    background: linear-gradient(
+      180deg,
+      #021b10 0%,
+      #020b08 50%,
+      #000000 100%
+    );
+    background-attachment: fixed;
+  }
+</style>
+
+</head>
+
+<body>
+  <!-- Tree Overlay (Above Aurora) -->
+<div class="tree-layer back-trees"></div>
+<div class="tree-layer front-trees"></div>
+<div class="container">
+
+<div class="container" style="
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,255,136,0.25), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(0,180,255,0.2), transparent 45%),
+    linear-gradient(180deg, #021b10, #020b08, #000000);
+">
+
+
+
+
+
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">🌱 SDG Tracker</div>
+  <div class="nav-links">
+    <a href="#info">Info</a>
+    <a href="#chart">Graph</a>
+    <a href="#map">Map</a>
+    <a href="#video">Video</a>
+    <a href="#sdgs">SDGs</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+ 
+<section class="hero">
+  <div class="leaf-particles">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <img src="assets/images/forest.jpg" class="hero-bg">
+  <div class="hero-box">
+    <h1>Sustainable Development Goals Tracker</h1>
+    <p>Visualizing India and global SDG progress using data, maps, and insights.</p>
+    <a href="#info">Explore Project</a>
+  </div>
+</section>
+
+<!-- INFO -->
+<section id="info">
+  <h2 class="section-title">About the 17 SDGs</h2>
+  <div class="info-box">
+    <p>
+The Sustainable Development Goals (SDGs) are a global initiative adopted by the United Nations in 2015 with the aim of achieving peace, prosperity, and environmental sustainability by the year 2030. These goals were created to address major global challenges such as poverty, hunger, health issues, lack of education, gender inequality, environmental degradation, and climate change.
+</p>
+
+<p>
+There are 17 interconnected goals, each focusing on a specific area of sustainable development. Together, they promote balanced growth by ensuring economic progress, social inclusion, and environmental protection. The SDGs encourage countries to work collectively so that development today does not harm future generations.
+</p>
+
+<p>
+The 17 SDGs include goals like ending poverty and hunger, ensuring good health and quality education, providing clean water and affordable energy, promoting decent work and innovation, building sustainable cities, protecting life on land and below water, and taking urgent action against climate change.
+</p>
+
+<p>
+This project presents the Sustainable Development Goals in an interactive and visual manner. By using maps, charts, and data visualization, it helps users understand how different countries, including India, are progressing towards achieving the SDGs. The aim is to spread awareness and encourage responsible actions that contribute to a sustainable and better future for all.
+</p>
+
+  </div>
+</section>
+
+<!-- GRAPH -->
+<section id="chart" class="chart-section">
+  <h2 class="section-title">India vs World SDG Growth – 2025</h2>
+
+  <canvas id="indiaWorldChart" height="120"></canvas>
+
+  <!-- FORCE VISIBLE PIE LINK -->
+  <div class="pie-link-wrapper">
+    <a href="pie.html" class="pie-link-btn">
+      View India vs World SDG Pie Analysis
+    </a>
+  </div>
+</section>
+
+
+<!-- MAP -->
+<section id="map">
+  <h2 class="section-title">World SDG Progress Map – 2025</h2>
+  <div id="worldMap"></div>
+</section>
+
+<!-- VIDEO -->
+<section id="video">
+  <h2 class="section-title">Understanding Sustainable Development</h2>
+  <div class="video-container">
+    <iframe width="100%" height="450"
+      src="https://www.youtube.com/embed/0XTBYMfZyrM"
+      allowfullscreen></iframe>
+  </div>
+</section>
+
+<!-- SDGS -->
+<section id="sdgs">
+  <h2 class="section-title">Explore All 17 SDGs</h2>
+  <div class="sdg-grid">
+    <script>
+      for(let i=1;i<=17;i++){
+        document.write(`<a href="pages/sdg${i}.html" class="sdg-card">SDG ${i}</a>`);
+      }
+    </script>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Sustainable Development Goals Tracker</p>
+</footer>
+
+<script>
+new Chart(document.getElementById("indiaWorldChart"),{
+  type:"bar",
+  data:{
+    labels:["No Poverty","Health","Education","Clean Energy","Climate Action"],
+    datasets:[
+      {label:"India (%)",data:[58,64,66,60,52],backgroundColor:"#00ff88"},
+      {label:"World (%)",data:[45,60,62,55,48],backgroundColor:"#4fa3d1"}
+    ]
+  },
+  options:{scales:{y:{beginAtZero:true,max:100}}}
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  var map = L.map("worldMap").setView([20, 0], 2);
+
+  L.tileLayer(
+    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    {
+      attribution: "© OpenStreetMap © CARTO"
+    }
+  ).addTo(map);
+
+  var countries = [
+    { name: "India", lat: 20.6, lng: 78.9, sdg: 58 },
+    { name: "USA", lat: 37.1, lng: -95.7, sdg: 70 },
+    { name: "Germany", lat: 51.2, lng: 10.4, sdg: 75 },
+    { name: "Brazil", lat: -14.2, lng: -51.9, sdg: 60 },
+    { name: "Nigeria", lat: 9.1, lng: 8.7, sdg: 42 }
+  ];
+function sdgColor(value) {
+  if (value >= 75) return "#00ff88";   // High
+  if (value >= 60) return "#ffaa33";   // Medium
+  return "#ff5555";                    // Low
+}
+
+  countries.forEach(function (c) {
+    L.circleMarker([c.lat, c.lng], {
+      radius: 10,
+     color: sdgColor(c.sdg),
+fillColor: sdgColor(c.sdg),
+
+      fillOpacity: 0.8
+    })
+    .addTo(map)
+    .bindPopup(
+      "<b>" + c.name + "</b><br>SDG Progress (2025): " + c.sdg + "%"
+    );
+  });
+
+});
+</script>
+<script src='https://cdn.jotfor.ms/agent/embedjs/019b1d57e71f7c8f99ac0f95ad6f46d0c62a/embed.js'>
+</script>
+</body>
+</html>
