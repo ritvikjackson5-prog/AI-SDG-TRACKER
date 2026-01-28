@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SDG 17 | Partnerships for the Goals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- MAIN CSS -->
+   <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/ai.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+  <!-- SDG PAGE WRAPPER -->
+  <div class="sdg-page">
+
+    <!-- HERO SECTION -->
+    <section class="sdg-hero">
+      <h1>SDG 17 – Partnerships for the Goals</h1>
+      <p>
+        Strengthening global partnerships is essential for sustainable development.
+        SDG 17 focuses on international cooperation, finance, technology transfer,
+        and capacity building to achieve all other Sustainable Development Goals.
+      </p>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <section class="glass-card">
+
+      <h2>AI-Based SDG 17 Progress (2020–2025)</h2>
+      <p>
+        This section presents an AI-based comparative analysis of global cooperation,
+        international aid, technology sharing, and partnerships across major countries
+        from 2020 to 2025.
+      </p>
+
+      <!-- DATA TABLE -->
+      <table class="sdg-table">
+        <tr>
+          <th>Country</th>
+          <th>2020</th>
+          <th>2021</th>
+          <th>2022</th>
+          <th>2023</th>
+          <th>2024</th>
+          <th>2025</th>
+          <th>Avg Annual Growth</th>
+        </tr>
+
+        <tr><td>India</td><td>62</td><td>64</td><td>66</td><td>68</td><td>70</td><td>72</td><td>+2%</td></tr>
+        <tr><td>USA</td><td>75</td><td>76</td><td>77</td><td>78</td><td>79</td><td>80</td><td>+1%</td></tr>
+        <tr><td>China</td><td>68</td><td>70</td><td>72</td><td>74</td><td>76</td><td>78</td><td>+2%</td></tr>
+        <tr><td>Germany</td><td>80</td><td>81</td><td>82</td><td>83</td><td>84</td><td>85</td><td>+1%</td></tr>
+        <tr><td>Japan</td><td>78</td><td>79</td><td>80</td><td>81</td><td>82</td><td>83</td><td>+1%</td></tr>
+        <tr><td>Brazil</td><td>65</td><td>67</td><td>69</td><td>71</td><td>73</td><td>75</td><td>+2%</td></tr>
+        <tr><td>Nigeria</td><td>52</td><td>54</td><td>56</td><td>58</td><td>60</td><td>62</td><td>+2%</td></tr>
+      </table>
+
+      <!-- BAR CHART -->
+      <h3 style="margin-top:35px;">Annual Growth Rate Comparison</h3>
+
+      <div class="bar-chart">
+        <div class="bar" style="--value:2">India <span>2%</span></div>
+        <div class="bar" style="--value:1">USA <span>1%</span></div>
+        <div class="bar" style="--value:2">China <span>2%</span></div>
+        <div class="bar" style="--value:1">Germany <span>1%</span></div>
+        <div class="bar" style="--value:1">Japan <span>1%</span></div>
+        <div class="bar" style="--value:2">Brazil <span>2%</span></div>
+        <div class="bar" style="--value:2">Nigeria <span>2%</span></div>
+      </div>
+
+     <div class="ai-dashboard">
+      <h2>AI Progress Prediction</h2>
+
+      <div class="ai-controls">
+        <div class="ai-control">
+          <label>Current Global Progress</label>
+          <input type="range" id="progress16" min="0" max="100" value="54">
+          <div class="ai-value">54%</div>
+        </div>
+
+        <div class="ai-control">
+          <label>Annual Improvement Rate</label>
+          <input type="range" id="rate16" min="0" max="10" value="3">
+          <div class="ai-value">3% per year</div>
+        </div>
+      </div>
+
+      <button onclick="predictSDG(16)">Run AI Prediction</button>
+
+      <div class="ai-progress-box">
+        <div class="ai-progress-track">
+          <div class="ai-progress-fill" id="bar16">0%</div>
+        </div>
+        <div class="ai-result-text" id="result16"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="../js/ai.js"></script>
+</body>
+</html>
+

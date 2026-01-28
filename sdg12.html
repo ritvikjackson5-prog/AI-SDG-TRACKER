@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SDG 11 – Sustainable Cities & Communities</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/ai.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="sdg-page">
+
+<section class="sdg-hero">
+  <h1>SDG 11 – Sustainable Cities & Communities</h1>
+  <p>
+    SDG 11 focuses on making cities and human settlements inclusive, safe,
+    resilient, and sustainable.
+  </p>
+</section>
+<section class="glass-card">
+
+  <h2>AI-Based SDG 12 Progress (Responsible Consumption & Production)</h2>
+  <p style="font-size:0.95rem; opacity:0.85;">
+    This section evaluates sustainable consumption patterns,
+    waste management, and resource efficiency from 2020 to 2025.
+  </p>
+
+  <table class="sdg-table">
+    <tr>
+      <th>Country</th>
+      <th>2020</th><th>2021</th><th>2022</th>
+      <th>2023</th><th>2024</th><th>2025</th>
+      <th>Avg Annual Growth</th>
+    </tr>
+
+    <tr><td>India</td><td>52</td><td>55</td><td>58</td><td>61</td><td>64</td><td>67</td><td>+3%</td></tr>
+    <tr><td>USA</td><td>68</td><td>69</td><td>70</td><td>71</td><td>72</td><td>73</td><td>+1%</td></tr>
+    <tr><td>China</td><td>60</td><td>62</td><td>64</td><td>66</td><td>68</td><td>70</td><td>+2%</td></tr>
+    <tr><td>Germany</td><td>75</td><td>76</td><td>77</td><td>78</td><td>79</td><td>80</td><td>+1%</td></tr>
+    <tr><td>Japan</td><td>73</td><td>74</td><td>75</td><td>76</td><td>77</td><td>78</td><td>+1%</td></tr>
+    <tr><td>Brazil</td><td>58</td><td>60</td><td>62</td><td>64</td><td>66</td><td>68</td><td>+2%</td></tr>
+    <tr><td>Nigeria</td><td>45</td><td>47</td><td>49</td><td>51</td><td>53</td><td>55</td><td>+2%</td></tr>
+  </table>
+
+  <h3 style="margin-top:35px;">Annual Growth Rate Comparison</h3>
+  <div class="bar-chart">
+    <div class="bar" style="--value:3">India <span>3%</span></div>
+    <div class="bar" style="--value:1">USA <span>1%</span></div>
+    <div class="bar" style="--value:2">China <span>2%</span></div>
+    <div class="bar" style="--value:1">Germany <span>1%</span></div>
+    <div class="bar" style="--value:1">Japan <span>1%</span></div>
+    <div class="bar" style="--value:2">Brazil <span>2%</span></div>
+    <div class="bar" style="--value:2">Nigeria <span>2%</span></div>
+  </div>
+
+  <p class="ai-note">*AI-based educational estimation.</p>
+
+</section>
+
+<section>
+  <div class="glass-card">
+    <h2>Why this goal matters</h2>
+    <p>
+      Sustainable cities improve quality of life through better housing,
+      transportation, green spaces, and disaster resilience.
+    </p>
+
+    <div class="ai-dashboard">
+      <h2>AI Progress Prediction</h2>
+
+      <div class="ai-controls">
+        <div class="ai-control">
+          <label>Current Global Progress</label>
+          <input type="range" id="progress11" min="0" max="100" value="59">
+          <div class="ai-value">59%</div>
+        </div>
+
+        <div class="ai-control">
+          <label>Annual Improvement Rate</label>
+          <input type="range" id="rate11" min="0" max="10" value="4">
+          <div class="ai-value">4% per year</div>
+        </div>
+      </div>
+
+      <button onclick="predictSDG(11)">Run AI Prediction</button>
+
+      <div class="ai-progress-box">
+        <div class="ai-progress-track">
+          <div class="ai-progress-fill" id="bar11">0%</div>
+        </div>
+        <div class="ai-result-text" id="result11"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="../js/ai.js"></script>
+</body>
+</html>
